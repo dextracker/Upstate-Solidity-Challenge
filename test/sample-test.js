@@ -1,16 +1,18 @@
-const { expect } = require("chai");
+const { expect, assert } = require("chai");
 const { ethers } = require("hardhat");
 
 describe("TimeLockTransfer Token and Contribution Contract", function() {
-  let TLT,token, owner, addr1,addr2, startTime, endTime, amount;
+  let TLT,token, tokenFail,owner, addr1,addr2, startTime, endTime, amount;
   let contributionContract,contribution, minter;
 
   beforeEach(async () => {
    TLT = await ethers.getContractFactory("TimeLockTransferToken");
    contributionContract = await ethers.getContractFactory("Contribution");
    [owner, addr1,addr2] = await ethers.getSigners();
-   startTime = Number(Date.now()/1000).toFixed(); //timestamp in unix readable format
-   endTime = startTime + 86400; //one day in unix ts
+   startTime = Number(Date.now()/1000).toFixed(); //timestamp in unix readable format   
+   endTime = Number(startTime) + 86400; //one day in unix ts
+   startTimeFail = Number(endTime);
+   endTimeFail =Number(startTimeFail) + 86400;
    amount = 50; // amount of tokens to transfer
   })
   
@@ -93,5 +95,31 @@ describe("Token Transfer", () => {
     })
 
   });
+
+  describe("Failed Token Transfer", () => {
+    
+    it("Should not be able to transfer tokens because of start time", async function() {
+      tokenFail = await TLT.deploy(1000, startTimeFail, endTimeFail); //deploy with 1000 tokens
+      await tokenFail.deployed();
+
+      let start = await tokenFail.startTime();
+      let end = await tokenFail.endTime();      
+      expect(await tokenFail.canTransfer()).to.equal(false);
+    })
+
+    it("Should revert when we try to perform transfer", async function() {
+      let originalBalAddr1 = await tokenFail.balanceOf(addr1.address);
+      let originalBalOwner = await tokenFail.balanceOf(owner.address);
+      
+      await expect(tokenFail.transfer(addr1.address, 50)).to.be.revertedWith("The transfers period has not started.");    
+
+      let balAddr1 = await tokenFail.balanceOf(addr1.address);
+      let balOwner = await tokenFail.balanceOf(owner.address);
+      
+      expect(balAddr1).to.equal(originalBalAddr1);
+      expect(balOwner).to.equal(originalBalOwner);
+    })
+
+  })
 
 });

@@ -32,7 +32,7 @@ contract Contribution {
  ///@notice Deposits ETH into the contract and mints tokens to the sender of the transaction
   function deposit() payable public {
     uint256 amount = msg.value;
-    require(amount > 0, "No ETH sent.");
+    require(amount > 0, "No ETH sent.");//also functions as -1 undeflow error so attackers cant mint the max amount of tokens;
     
     contributions[msg.sender] += amount;
     emit Deposit(msg.sender, amount);
