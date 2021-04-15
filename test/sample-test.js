@@ -35,10 +35,9 @@ describe("TimeLockTransfer Token and Contribution Contract", function() {
 
   describe("Contribution Deployment", () => {
     it("Should Deploy Contribution and set Minter", async function() {
-      //console.log(token.address);
       contribution = await contributionContract.deploy(token.address);
       await contribution.deployed();
-      //console.log(contribution.address);
+      
       
       await token.setMinter(contribution.address);
       minter = contribution.address;
@@ -48,8 +47,7 @@ describe("TimeLockTransfer Token and Contribution Contract", function() {
     it("Should deposit ETH to contribution and mint tokens for addr2", async function() {
       let contributionAmount = 10;
       let contributtionAddr2 = await contribution.connect(addr2);
-      //console.log(addr2);
-      //console.log(contributtionAddr2);
+
       await contributtionAddr2.deposit({value: contributionAmount});
       
       expect(await contribution.getContribution(addr2.address)).to.equal(contributionAmount);
@@ -73,8 +71,6 @@ describe("TimeLockTransfer Token and Contribution Contract", function() {
 
 describe("Token Transfer", () => {
     it("Should transfer 50 tokens from owner to addr1", async function(){
-      // expect(await token.startTime()).to.lessThanOrEqual(startTime);
-      // expect(await token.endTime()).to.lessThanOrEqual(endTime);
       expect(await token.canTransfer()).to.equal(true);
 
       let transfer = await token.transfer(addr1.address, 50);
