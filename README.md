@@ -1,16 +1,19 @@
 # Time Locked Token Distribution Contract
 
+## _```TimeLockTransfer.sol```_
+  This contract defines a Token that can only be transfered given a input `startTime` and `endTime`.
 
-<h1>Time Lock Transfer Token (TimeLockTransfer.sol) </h1>
-This contract defines a Token that can only be transfered given a input `startTime` and `endTime`.
-<br>
-<h1> Contribution (Contribution.sol) </h1>
-  <p>This contract creates a TimeLockTransfer mint, and mints an appropriate amount of tokens based on the amount of ETH deposited into the contract.</p>
-<br> 
+## _```Contribution.sol```_
+  This contract creates a TimeLockTransfer mint, and mints an appropriate amount of tokens based on the amount of ETH deposited into the contract.
 
-<h1> How To Run </h1>
-<b> To compile the contracts and run test please do the following: <br></b>
 
- `yarn` at the project root.
+## _How To Run_
+To compile the contracts and run test please do the following: 
 
- `npx hardhat test` to run the tests and compile the contracts.
+ ```js
+ yarn (at the project root)
+ 
+ npx hardhat test (to run the tests and compile the contracts)
+ 
+ 
+
