@@ -1,4 +1,4 @@
-# Upstate-Solidity-Challenge
+# Time Locked Token Distribution Contract
 
 
 <h1>Time Lock Transfer Token (TimeLockTransfer.sol) </h1>
